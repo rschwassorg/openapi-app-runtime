@@ -1,0 +1,113 @@
+openapi: 3.0.3
+info:
+  title: Runtime Fixture API
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Health response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+  /widgets:
+    post:
+      operationId: createWidget
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+      responses:
+        '201':
+          description: Created widget
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Widget'
+  /widgets/{widgetId}:
+    get:
+      operationId: getWidget
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: widgetId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Widget
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Widget'
+  /admin:
+    get:
+      operationId: adminOnly
+      security:
+        - customAdmin: []
+      responses:
+        '200':
+          description: Admin response
+          content:
+            application/json:
+              schema:
+                type: object
+  /missing:
+    get:
+      operationId: missingHandler
+      responses:
+        '200':
+          description: Missing handler response
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    customAdmin:
+      type: apiKey
+      in: header
+      name: x-admin-token
+  schemas:
+    Health:
+      type: object
+      required:
+        - ok
+      properties:
+        ok:
+          type: boolean
+    Widget:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        ownerId:
+          type: string
