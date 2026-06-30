@@ -3,7 +3,8 @@ import path from 'node:path';
 import jwt from 'jsonwebtoken';
 import { describe, expect, it } from 'vitest';
 
-import { ApiError, createOpenApiApp, createTestClient, type OpenApiHandler } from '../src/index.js';
+import { ApiError, createOpenApiApp, type OpenApiHandler } from '../src/index.js';
+import { createTestClient } from '../src/testing/createTestClient.js';
 
 process.env.NODE_ENV = 'test';
 
