@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import type { RequestHandler } from 'express';
 import type { CorsOptions } from 'cors';
 
 export interface RuntimeUser {
@@ -55,6 +56,7 @@ export interface CreateOpenApiAppOptions {
   auth?: RuntimeAuthOptions;
   corsOptions?: CorsOptions;
   docs?: boolean;
+  beforeMiddleware?: RequestHandler[];
 }
 
 export interface ErrorResponseBody {

@@ -87,6 +87,7 @@ export async function createOpenApiApp(options: CreateOpenApiAppOptions): Promis
     auth = {},
     corsOptions = {},
     docs = true,
+    beforeMiddleware = [],
   } = options;
 
   const document = loadOpenApiDocument(specPath);
@@ -95,6 +96,7 @@ export async function createOpenApiApp(options: CreateOpenApiAppOptions): Promis
   const securitySchemes = declaredSecuritySchemes(document);
 
   app.disable('x-powered-by');
+  for (const middleware of beforeMiddleware) app.use(middleware);
   app.use(helmet());
   app.use(cors(corsOptions));
   app.use(express.json({ limit: '1mb' }));
