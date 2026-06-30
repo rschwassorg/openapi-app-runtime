@@ -88,6 +88,7 @@ export async function createOpenApiApp(options: CreateOpenApiAppOptions): Promis
     corsOptions = {},
     docs = true,
     beforeMiddleware = [],
+    handleApiRequests = true,
   } = options;
 
   const document = loadOpenApiDocument(specPath);
@@ -111,6 +112,8 @@ export async function createOpenApiApp(options: CreateOpenApiAppOptions): Promis
     app.get('/openapi.json', (_req, res) => res.json(document));
     app.use('/docs', swaggerUi.serve, swaggerUi.setup(document as Record<string, unknown>));
   }
+
+  if (!handleApiRequests) return app;
 
   const api = new OpenAPIBackend({
     definition: document,

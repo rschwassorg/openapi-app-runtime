@@ -57,6 +57,7 @@ export interface CreateOpenApiAppOptions {
   corsOptions?: CorsOptions;
   docs?: boolean;
   beforeMiddleware?: RequestHandler[];
+  handleApiRequests?: boolean;
 }
 
 export interface ErrorResponseBody {
