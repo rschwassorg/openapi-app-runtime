@@ -89,6 +89,7 @@ export async function createOpenApiApp(options: CreateOpenApiAppOptions): Promis
     docs = true,
     beforeMiddleware = [],
     handleApiRequests = true,
+    handleRequestPath = () => true,
   } = options;
 
   const document = loadOpenApiDocument(specPath);
@@ -155,6 +156,10 @@ export async function createOpenApiApp(options: CreateOpenApiAppOptions): Promis
 
   app.use(async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!handleRequestPath(req as RuntimeRequest)) {
+        next();
+        return;
+      }
       await api.handleRequest(createBackendRequest(req as RuntimeRequest), req, res);
       if (!res.headersSent) next();
     } catch (error) {

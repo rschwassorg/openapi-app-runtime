@@ -66,6 +66,18 @@ describe('createOpenApiApp', () => {
     await createTestClient(app).get('/docs/').expect(404);
   });
 
+  it('can pass selected request paths through to later middleware', async () => {
+    const app = await appWith({
+      docs: false,
+      handleRequestPath: (req) => req.path.startsWith('/health'),
+    });
+    app.get('/spa', (_req, res) => res.type('html').send('<main>SPA</main>'));
+
+    await createTestClient(app).get('/health').expect(200);
+    const response = await createTestClient(app).get('/spa').expect(200);
+    expect(response.text).toBe('<main>SPA</main>');
+  });
+
   it('returns standard validation errors', async () => {
     const app = await appWith();
     const response = await createTestClient(app)

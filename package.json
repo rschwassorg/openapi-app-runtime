@@ -12,8 +12,8 @@
       "import": "./dist/index.js"
     },
     "./testing": {
-      "types": "./dist/testing/createTestClient.d.ts",
-      "import": "./dist/testing/createTestClient.js"
+      "types": "./dist/testing/index.d.ts",
+      "import": "./dist/testing/index.js"
     }
   },
   "files": [
@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "check": "tsc -p tsconfig.json --noEmit",
+    "check": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.type-tests.json",
     "test": "vitest run",
     "test:watch": "vitest",
     "prepare": "npm run build"
@@ -45,6 +45,7 @@
     "@types/node": "^22.10.10",
     "@types/supertest": "^6.0.2",
     "@types/swagger-ui-express": "^4.1.8",
+    "openapi-typescript": "^7.13.0",
     "supertest": "^7.0.0",
     "typescript": "^5.7.3",
     "vitest": "^2.1.8"
